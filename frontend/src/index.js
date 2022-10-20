@@ -1,4 +1,5 @@
 import React from 'react';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 
@@ -19,6 +20,6 @@ const root = createRoot(container);
 
 root.render(
   <Router>
-<App/>
+<GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}><App/></GoogleOAuthProvider>
   </Router>
 );

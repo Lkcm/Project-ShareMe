@@ -1,11 +1,45 @@
 import React from 'react'
-import GoogleLogin from 'react-google-login';
+import { GoogleLogin } from '@react-oauth/google';
+import jwt_decode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
-import { FcGoogle } from 'react-icons/fc';
 import shareVideo from '../assets/share.mp4';
 import logo from '../assets/logowhite.png';
 
+import { client } from '../client'
+
 const Login = () => {
+  const navigate = useNavigate()
+  const responseGoogle = (response) => {
+
+    const decoded =  jwt_decode(response.credential);
+
+
+    console.log(response)
+    console.log(decoded)
+
+
+
+    localStorage.setItem('user',JSON.stringify(decoded))
+
+    const { name, picture, sub } = decoded
+
+    const doc = {
+      _id: sub,
+      _type: 'user',
+      userName: name,
+      image: picture
+    }
+
+    console.log(doc)
+    client.createIfNotExists(doc)
+      .then(() => {
+        navigate('/', { replace: true})
+      })
+  }
+
+
+
+
   return (
     <div className="flex justify-start items-center flex-col h-screen">
     <div className="relative h-full w-full">
@@ -25,18 +59,12 @@ const Login = () => {
         </div>
 
         <div className="shadow-2xl">
-          <GoogleLogin
-            clientId=''
-            render={(renderProps) => (
-              <button
-                type="button"
-                className="bg-mainColor flex justify-center items-center p-3 rounded-lg cursor-pointer outline-none"
-                >
+        <GoogleLogin
+  onSuccess={responseGoogle}
+  onError={responseGoogle}
+/>;
 
-                  <FcGoogle className="mr-4"/> Sign in with Google
-                </button>
-            ) }
-          />
+
 
         </div>
       </div>
