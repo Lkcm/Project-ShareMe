@@ -34,6 +34,10 @@ const Home = () => {
     scrollRef.current.scrollTo(0, 0)
   }, [])
 
+  // console.log(userId)
+
+
+
   return (
 
     <div className="flex bg-gray-50 md:flex-row flex-col h-screen transaction-height duration-75 ease-out">
@@ -46,7 +50,7 @@ const Home = () => {
       <Link to="/">
         <img src={logo} alt="logo" className="w-28"/>
       </Link>
-      <Link to={`user-profile/${user?._id}`}>
+      <Link to={`user-profile/:userId`}>
         <img src={user?.image} alt="logo" className="w-28"/>
       </Link>       
       </div>
@@ -61,7 +65,7 @@ const Home = () => {
     </div>
     <div className="pb-2 flex-1 h-screen overflow-y-scroll" ref={scrollRef}>
       <Routes>
-        <Route path="/user-profile:userId" element={<UserProfile/>}/>
+        <Route path={`user-profile/:userId`} element={<UserProfile/>}/>
         <Route path="/*" element={<Pins user={user && user}/>} /> 
       </Routes>
     </div>
